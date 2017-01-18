@@ -113,6 +113,24 @@ Because of how headers are sent to force a file download, the "Force Download" p
 ```
 
 
+###Change Log
+
+
+1.2.0 Tags added:
+
+* {exp:gofile:can_upload}
+* {exp:gofile:upload}
+	
+1.1.0 Initial release with Inital release with tags:
+    
+* {exp:gofile:set_id}
+* {exp:gofile:reset_id}
+* {exp:gofile:download}
+	
+	
+
+
+
 	
 
 
