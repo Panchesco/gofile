@@ -207,7 +207,7 @@ Tags added:
 	
 1.1.0 
 
-Initial release with Inital release with tags:
+Inital release with tags:
     
 * {exp:gofile:set_id}
 * {exp:gofile:reset_id}
