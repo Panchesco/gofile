@@ -177,6 +177,21 @@ Display file info for a file.
 {file_url}<br>
 {file_ext}<br>
 {file_size_mb}<br>
+{author_member_id}<br>
+{author_group_id}<br>
+{author_screen_name}<br> 
+{author_email}<br>
+{author_url}<br>
+{author_location}<br>
+{author_occupation}<br>
+{author_interests}<br> 
+{author_bday_d}<br>
+{author_bday_m}<br>
+{author_bday_y}<br>
+{author_bio}<br> 
+{author_signature}<br> 
+{author_join_date}<br>
+{author_total_entries}
 
 #####Example
 
@@ -193,9 +208,16 @@ Display file info for a file.
 
 ##Change Log
 
+1.2.2
+
+* Author data for a file is now available in {exp:gofile:file_info} tag
+* Method: file_info_row now uses EE3 Model service
+* Converts file_id passed in param to integer when passing it to Model
+
+
 1.2.1 
 
-Messages moved to language file.
+Messages moved to language file
 
 
 1.2.0 

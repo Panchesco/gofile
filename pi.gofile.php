@@ -130,9 +130,9 @@ class Gofile
 		}
 
 		
-		if($row) 
+		if( ! empty($row)) 
 		{
-			return ee()->TMPL->parse_variables(ee()->TMPL->tagdata,array( (array) $row));
+			return ee()->TMPL->parse_variables(ee()->TMPL->tagdata,array($row));
 			
 			} else {
 				
@@ -356,14 +356,8 @@ public function directory()
 	 * @param $file_id integer
 	 * @return object.
 	 */
-	private function file_info_row($file_id)
+	/*private function file_info_row($file_id)
 	{
-
-		// Be sure an integer was passed before using it in query.
-		if( ! is_int($file_id)) 
-		{
-			return FALSE;
-		}
 		
 		// Todo: Replace with EE Model Service.
 		$sql = "
@@ -383,7 +377,7 @@ public function directory()
 				exp_upload_prefs.cat_group	
 			FROM exp_files 
 			LEFT OUTER JOIN exp_upload_prefs ON exp_upload_prefs.id = exp_files.upload_location_id
-			WHERE exp_files.file_id = '" . $file_id . "'
+			WHERE exp_files.file_id = '" . intval($file_id) . "'
 			LIMIT 1
 			";	
 			
@@ -405,6 +399,62 @@ public function directory()
 	}
 	
 	//---------------------------------------------------------------------------
+	*/
+	
+	/**
+	 * Return template friendly info for a files record.
+	 * @param $file_id integer
+	 * @return array
+	 */
+	private function file_info_row()
+	{
+
+		$data = array();
+		
+		$file_id = intval(ee()->TMPL->fetch_param('file_id',0),0);
+
+		
+		$file_info = ee('Model')->get('File')
+					->filter('file_id',intval($file_id))
+					->limit(1)
+					->first();
+							
+					
+		if($file_info)
+		{
+			
+			$data = array();
+			
+			$data = $file_info->toArray();
+			$upload_destination = ($file_info->UploadDestination->toArray());
+			$author_data = $file_info->UploadAuthor->toArray();
+			$author_keys = $this->author_keys();	
+			
+				// Add a few file properties we'll want available in the template
+				$data['file_path'] = str_replace('{base_path}',$this->base_path,$upload_destination['server_path']);
+				$data['file_path'].= $data['file_name'];
+				$data['file_ext'] = $this->file_ext($data['file_name']);
+				$data['file_url'] = str_replace('{base_url}',$this->base_url,$upload_destination['url']);
+				$data['file_url'].= $data['file_name'];
+				$data['file_size_mb'] = (is_numeric($data['file_size'])) ? round(($data['file_size'] /1024/1024),2) : 0;	
+				
+				// Add author data we'll want available in the template
+				
+				foreach($author_data as $key=>$row)
+				{
+					if(in_array($key,$author_keys) )
+					{
+						$data['author_'.$key] = $row;
+					}
+				}
+				
+		}
+		
+			return $data;
+	}
+	
+	//---------------------------------------------------------------------------	
+	
 	
 /**
  * Add a file to exp_files
@@ -478,6 +528,32 @@ private function add_file($data)
 	}
 	    	 	
 	//-----------------------------------------------------------------------------
+	
+/**
+ * Return array of author data keys we'll make available in templates for a file.
+ * @return array
+*/
+private function author_keys() 
+{
+
+    	 	return array( 'member_id',
+    	 			    'group_id',
+    	 			    'screen_name',
+    	 			    'email',
+    	 			    'url',
+    	 			    'location',
+    	 			    'occupation',
+    	 			    'interests',
+    	 			    'bday_d',
+    	 			    'bday_m',
+    	 			    'bday_y',
+    	 			    'bio',
+    	 			    'signature',
+    	 			    'join_date',
+    	 			    'total_entries');
+}
+    	 	
+//-----------------------------------------------------------------------------
 
 }
 // End class Gofile
