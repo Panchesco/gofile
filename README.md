@@ -126,9 +126,12 @@ Upload a submitted file/s to a File Manager directory or another path. Returns v
 | max_height	| no | Maximum height in pixels of uploaded images | 1200 | |
 | max_size	| no | Maximum size in megabytes uploaded files | 0 | |
 | max_width	| no | Maximum width in pixels of uploaded images | 1200 | |
-| upload_path	| no | full path on server to upload to |  | |
+| upload_path	| no | Full path on server to upload directory |  | |
+| upload_url	| no | Web root relative URL of upload directory |  / | |
 
-Note: If directory_id is present, the settings and file limits for that Upload Directory will be used instead of the allowed_types, max_height, max_size, max_width, and upload_path parameters.
+Notes: 
+* If directory_id is present, the settings and file limits for that Upload Directory will be used instead of the allowed_types, max_height, max_size, max_width, and upload_path parameters.
+* If using an upload_path instead of a directory_id, include the upload_url parameter.
 
 ####Variables
 
@@ -151,6 +154,7 @@ Note: If directory_id is present, the settings and file limits for that Upload D
 {description}<br>
 {credit}<br>
 {location}<br>
+{file_url}
 
 ###{exp:gofile:file_info} 
 
@@ -207,6 +211,10 @@ Display file info for a file.
 
 
 ##Change Log
+
+1.2.3
+
+* Adds upload_url parameter and file_url variable to {exp:gofile:upload} tag pair.
 
 1.2.2
 

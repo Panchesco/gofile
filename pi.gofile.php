@@ -215,6 +215,7 @@ public function directory()
 				$file_ext_tolower = ee()->TMPL->fetch_param('file_ext_tolower','y');
 				$encrypt_name = ee()->TMPL->fetch_param('encrypt_name','y');
 				$upload_path = ee()->TMPL->fetch_param('upload_path');
+				$upload_url = ee()->TMPL->fetch_param('upload_url');
 				$userfile	= ee()->TMPL->fetch_param('file_field','userfile');
 				$guest_access = strtolower(ee()->TMPL->fetch_param('guest_access','n'));
 				
@@ -244,7 +245,6 @@ public function directory()
 					
 					if($dir !== FALSE) 
 					{
-						
 						// Allowed types
 						if($dir['allowed_types'] != 'all') 
 						{
@@ -302,22 +302,31 @@ public function directory()
 					if($directory_id) 
 					{
 						$add = $this->add_file($row);	
+						$data[$key]['base_url'] = $this->base_url;
 						$data[$key]['file_id'] = $add->file_id;
 						$data[$key]['upload_location_id'] = $add->upload_location_id;
+						$data[$key]['base_url'] = $this->base_url;
+						$data[$key]['upload_url'] = $dir['url'];
+						$data[$key]['file_url'] = $dir['url'] . $add->file_name;
 						$data[$key]['title'] = $add->title;
 						$data[$key]['description'] = $add->description;
 						$data[$key]['credit'] = $add->credit;
 						$data[$key]['location'] = $add->location;
 					} else {
+						
 						$data[$key]['file_id'] = '';
 						$data[$key]['upload_location_id'] = '';
+						$data[$key]['base_url'] = $this->base_url;
+						$data[$key]['upload_url'] = $upload_url;
+						$data[$key]['file_url'] = '/' . trim($data[$key]['upload_url'],'/') . '/' . $data[$key]['file_name'];
 						$data[$key]['title'] = '';
 						$data[$key]['description'] = '';
 						$data[$key]['credit'] = '';
 						$data[$key]['location'] = '';
 					}
 				}
-
+				
+				
 				return ee()->TMPL->parse_variables(ee()->TMPL->tagdata,$data);
 				
 				} else {
