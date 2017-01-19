@@ -53,6 +53,9 @@ class Gofile
 		$this->group_id = ee()->session->userdata('group_id');
 		$this->base_path = '/' . trim(ee()->config->item('base_path'),'/');
 		$this->base_url = trim(ee()->config->item('base_url'),'/');
+		
+		ee()->lang->loadfile('gofile');
+		
 	}
 	
 	//---------------------------------------------------------------------------
@@ -63,9 +66,7 @@ class Gofile
 		
 		if( ! $this->file_id) 
 		{
-
-			return 'There was a problem and the file cannot be downloaded.';
-		
+			return lang('file_could_not_download');
 		}
 		
 		
@@ -100,7 +101,7 @@ class Gofile
 			} else {
 				
 			
-			return 'There was a problem and the file cannot be downloaded.';
+			return lang('file_could_not_download');
 		}
 		
 	}
@@ -155,7 +156,7 @@ class Gofile
 	//---------------------------------------------------------------------------
 	
 	/**
-	 * Set file id to session.
+	 * Reset file id in session to file_id or 0
 	 * @return void
 	 */
 	public function reset_id()
@@ -164,7 +165,7 @@ class Gofile
 			{
 				ee()->session->set_flashdata('file_id',ee()->TMPL->fetch_param('file_id'));
 			} else {
-				ee()->session->set_flashdata('file_id',ee()->session->flashdata('file_id'));
+				ee()->session->set_flashdata('file_id',0);
 			}
 			
 		return;
@@ -179,8 +180,6 @@ class Gofile
 	*/
 	public function can_upload() 
 	{
-		$this->upload_destination(10);
-		
 		return ee()->session->userdata('can_upload_new_files');
 	}
 	    	 	
@@ -230,19 +229,16 @@ public function directory()
 					}
 					
 					$dir = $this->upload_destination($directory_id);
-					### Todo get these from ee
-					
-					
+
 					// Is current user allowed?
-					
 					if( $dir && in_array(ee()->session->userdata('group_id'),$dir['no_access']))
 					{
-						return 'You do not have access to this directory';
+						return lang('directory_no_access');
 					};
 					
 					if($this->can_upload() != 'y') {
 						
-						return 'You are not allowed to upload files';
+						return lang('user_cannot_upload_files');
 					}
 
 					
@@ -321,14 +317,18 @@ public function directory()
 						$data[$key]['location'] = '';
 					}
 				}
-				
+
 				return ee()->TMPL->parse_variables(ee()->TMPL->tagdata,$data);
 				
 				} else {
 					
-					return ee()->upload->display_errors('<p>','</p>');
+					if(ee()->config->item('debug')!=0)
+					{
+						return '<ul>' . ee()->upload->display_errors('<li>','</li>') . '</ul>';
+					} else {
 					
-					return ee()->TMPL->no_results();
+						return ee()->TMPL->no_results();
+					}
 				}
 		
 			 	
@@ -353,11 +353,19 @@ public function directory()
 	
 	/**
 	 * Return template friendly info for a files record.
+	 * @param $file_id integer
 	 * @return object.
 	 */
 	private function file_info_row($file_id)
 	{
 
+		// Be sure an integer was passed before using it in query.
+		if( ! is_int($file_id)) 
+		{
+			return FALSE;
+		}
+		
+		// Todo: Replace with EE Model Service.
 		$sql = "
 				SELECT 
 				exp_files.file_id,
