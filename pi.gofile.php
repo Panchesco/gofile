@@ -347,59 +347,8 @@ public function directory()
 		return strtolower(array_pop($filename_array));
 	 }
 	 
-
-	 
 	 //-----------------------------------------------------------------------------
-	
-	/**
-	 * Return template friendly info for a files record.
-	 * @param $file_id integer
-	 * @return object.
-	 */
-	/*private function file_info_row($file_id)
-	{
-		
-		// Todo: Replace with EE Model Service.
-		$sql = "
-				SELECT 
-				exp_files.file_id,
-				exp_files.upload_location_id,
-				exp_files.mime_type,
-				exp_files.title,
-				exp_files.file_name,
-				exp_files.file_size,
-				exp_files.description,
-				exp_files.credit,
-				exp_files.location,
-				exp_upload_prefs.name AS directory,
-				exp_upload_prefs.server_path AS file_path,
-				exp_upload_prefs.url AS file_url,
-				exp_upload_prefs.cat_group	
-			FROM exp_files 
-			LEFT OUTER JOIN exp_upload_prefs ON exp_upload_prefs.id = exp_files.upload_location_id
-			WHERE exp_files.file_id = '" . intval($file_id) . "'
-			LIMIT 1
-			";	
-			
-			$result = ee()->db->query($sql);
-			$row = $result->row();
-			
-			if($row) 
-			{
-				
-				$row->file_path = str_replace('{base_path}',$this->base_path,$row->file_path);
-				$row->file_url = str_replace('{base_url}',$this->base_url,$row->file_url);
-				$row->file_ext = $this->file_ext($row->file_name);
-				$row->file_path.= $row->file_name;
-				$row->file_url.= $row->file_name;
-				$row->file_size_mb = (is_numeric($row->file_size)) ? round(($row->file_size /1024/1024),2) : 0;	
-			} 			
-			
-			return $row;
-	}
-	
-	//---------------------------------------------------------------------------
-	*/
+
 	
 	/**
 	 * Return template friendly info for a files record.
@@ -411,7 +360,7 @@ public function directory()
 
 		$data = array();
 		
-		$file_id = intval(ee()->TMPL->fetch_param('file_id',0),0);
+		$file_id = ee()->TMPL->fetch_param('file_id',0);
 
 		
 		$file_info = ee('Model')->get('File')
@@ -422,10 +371,15 @@ public function directory()
 					
 		if($file_info)
 		{
-			
 			$data = array();
 			
 			$data = $file_info->toArray();
+			
+			
+			if($data['upload_location_id']!=0) 
+			{
+			
+			
 			$upload_destination = ($file_info->UploadDestination->toArray());
 			$author_data = $file_info->UploadAuthor->toArray();
 			$author_keys = $this->author_keys();	
@@ -447,6 +401,8 @@ public function directory()
 						$data['author_'.$key] = $row;
 					}
 				}
+				
+			}
 				
 		}
 		
