@@ -156,11 +156,10 @@ Note: If directory_id is present, the settings and file limits for that Upload D
 
 Display file info for a file.
 
-
 ####Parameters
-| Parameter | Required? | Description |Default|Options
-| --- | --- | --- | --- |
-| file_id | Yes |	The file_id of an Upload File Entry |  | 
+| Parameter | Required? | Description | Default | Options |
+| --- | --- | --- | --- | --- |
+| file_id | Yes |	The file_id of an Upload File Entry |  |  |
 
 
 ####Variables
