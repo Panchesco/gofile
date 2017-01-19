@@ -4,7 +4,7 @@
  *
  * @package ExpressionEngine
  * @author Richard Whitmer/Godat Design
- * @copyright (c) 2016, Richard Whitmer
+ * @copyright (c) 2016-2017, Richard Whitmer
  * @license
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -43,8 +43,8 @@ class Gofile
 	
 	public $return_data;
 	public $base_path;
+	public $file_id = FALSE;
 	public $base_url;
-	public $file_id;
 	public $group_id;
 	public $guest_access = FALSE;
 
@@ -54,8 +54,7 @@ class Gofile
 		$this->base_path = '/' . trim(ee()->config->item('base_path'),'/');
 		$this->base_url = trim(ee()->config->item('base_url'),'/');
 		
-		ee()->lang->loadfile('gofile');
-		
+		ee()->lang->loadfile('gofile');		
 	}
 	
 	//---------------------------------------------------------------------------
@@ -66,19 +65,17 @@ class Gofile
 		
 		if( ! $this->file_id) 
 		{
-			return lang('file_could_not_download');
+			return lang('file_no_file_id');
 		}
 		
-		
 		$row = $this->file_info_row($this->file_id);
-		
 		
 		if($this->file_id!=0 AND $row)
 		{
 			
-				$file = $row->file_path;
+				$file = $row['file_path'];
 			
-				if(file_exists($row->file_path)) 
+				if(file_exists($row['file_path'])) 
 				{
 				
 				// http://php.net/manual/en/function.readfile.php
@@ -147,10 +144,14 @@ class Gofile
 	 * @return void
 	 */
 	public function set_id()
-	{
-			ee()->session->set_flashdata('file_id',ee()->TMPL->fetch_param('file_id'));
-		
+	{			
+			
+			$file_id = ee()->TMPL->fetch_param('file_id');
+			
+			ee()->session->set_flashdata('file_id',$file_id);
+
 		return;
+
 	}
 	
 	//---------------------------------------------------------------------------
@@ -245,11 +246,13 @@ public function directory()
 					
 					if($dir !== FALSE) 
 					{
+
 						// Allowed types
 						if($dir['allowed_types'] != 'all') 
 						{
-							$allowed_types = $dir['allowed_types'];
+							$allowed_types = $this->allowed_types($dir['allowed_types']);
 						}
+						
 						
 						$upload_path = $dir['server_path'];
 						$max_size = $dir['max_size']*1024;
@@ -345,6 +348,25 @@ public function directory()
 	    	 	
 	//-----------------------------------------------------------------------------	
 	
+	/**
+	 * Convert EE File manager allowed types to pipe delimited list of file types for CI.
+	 * @param $allowed_types string
+	 * @return string
+	*/
+	private function allowed_types($allowed_types) 
+	{
+	
+		if($allowed_types=="all") 
+		{
+			return "jpg|JPG|jpeg|JPEG|gif|png|txt|doc|docx|pdf|rtf|css|html|csv|xls|xls|excel|ppt";
+		} else {
+			return "jpg|JPG|jpeg|JPEG|gif|png";
+		}
+	    	 	
+	}
+	    	 	
+	//-----------------------------------------------------------------------------
+	
 		/**
 	 * Return the file extension from a file name
 	 * @param $filename string
@@ -369,15 +391,12 @@ public function directory()
 
 		$data = array();
 		
-		$file_id = ee()->TMPL->fetch_param('file_id',0);
-
 		
 		$file_info = ee('Model')->get('File')
-					->filter('file_id',intval($file_id))
+					->filter('file_id',intval($this->file_id))
 					->limit(1)
 					->first();
-							
-					
+			
 		if($file_info)
 		{
 			$data = array();
@@ -471,8 +490,9 @@ private function add_file($data)
 				$data['no_access'][] = 3;
 			}
 			
+			
 			// Check for member groups that don't have access to upload destination.
-			$no_access = ($dest->NoAccess) ? $dest->NoAccess->toArray() : array();	
+			$no_access = ($dest->NoAccess->count()>0) ? $dest->NoAccess->toArray() : array();	
 			
 			// get group_ids for those groups and add it to $data array.
 			foreach($no_access as $key => $row) 

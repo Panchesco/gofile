@@ -4,7 +4,7 @@ return array(
   'author_url'  => 'https://github.com/panchesco',
   'name'        => 'Gofile',
   'description' => 'Added file handling functions',
-  'version'     => '1.2.3',
+  'version'     => '1.2.4',
   'namespace'   => 'Panchesco\Addons\Gofile',
   'settings_exist' => FALSE,
 );

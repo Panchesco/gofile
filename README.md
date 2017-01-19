@@ -212,6 +212,10 @@ Display file info for a file.
 
 ##Change Log
 
+1.2.4
+
+* Adds allowed_types method for setting CI config['allowed_types'] from EE File Manager setting.
+
 1.2.3
 
 * Adds upload_url parameter and file_url variable to {exp:gofile:upload} tag pair.

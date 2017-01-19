@@ -9,6 +9,8 @@ $lang = array(
 
 'file_id_invalid' => 'The file id is not valid',
 
+'file_no_file_id' => 'No file id',
+
 'user_cannot_upload_files' => 'You are not allowed to upload files',
 
 
