@@ -116,7 +116,7 @@ Because of how headers are sent to force a file download, the "Force Download" p
 Upload a submitted file/s to a File Manager directory or another path. Returns variables for the completed upload.
 
 ####Parameters
-| Parameter | Required? | Description |Default|Options
+| Parameter | Required? | Description | Default | Options |
 | --- | --- | --- | --- |
 | allowed_types | no | Pipe-separted list of file types | txt | |
 | directory_id | no | upload_location_id | |	|
