@@ -118,7 +118,7 @@ Upload a submitted file/s to a File Manager directory or another path. Returns v
 ####Parameters
 | Parameter | Required? | Description | Default | Options |
 | --- | --- | --- | --- | --- |
-| allowed_types | no | Pipe-separted list of file types | txt | |
+| allowed_types | no | Pipe-separated list of file types | txt | |
 | directory_id | no | upload_location_id | |	|
 | encrypt_name | no | Encrypt the filename of the uploaded file? | y | y, n |
 | guest_access | no | Allow non-logged in user to upload files? | n | y, n |
