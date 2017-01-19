@@ -19,7 +19,7 @@ Sorry, you can't upload files.
 {/if}
 ```
 
-###{exp:gofile:set_id}
+###{exp:gofile:reset_id}
 
 Set or reset file_id in EE Flashdata.
 
