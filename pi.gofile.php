@@ -48,7 +48,7 @@ class Gofile
 	public $group_id;
 	public $guest_access = FALSE;
 	public $can_define_path = FALSE;
-	private $mode = 0755;
+	private $mode = 0744;
 	
 	function __construct()
 	{
