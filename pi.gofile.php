@@ -111,7 +111,7 @@ class Gofile
 	public function file_info()
 	{
 		
-		if(ee()->TMPL->fetch_param('file_id',0)) { 
+		if(ee()->TMPL->fetch_param('file_id')) { 
 			$this->file_id = ee()->TMPL->fetch_param('file_id');
 		} else {
 			$this->file_id = ee()->session->flashdata('file_id');
@@ -185,20 +185,6 @@ class Gofile
 	}
 	    	 	
 	//-----------------------------------------------------------------------------
-
-/**
- * Return information about an upload destination to the template.
- * @return
-*/
-public function directory() 
-{
-		$id = ee()->TMPL->fetch_param('id');
-		
-		$upload_destination = $this->upload_destination($id);
-	
-}
-    	 	
-//-----------------------------------------------------------------------------
 	
 	/**
 	 * Upload file/s to server. Return information about uploaded files to templats
