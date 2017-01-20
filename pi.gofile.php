@@ -240,8 +240,9 @@ class Gofile
 			
 		} elseif ( !file_exists( $upload_path ) && $this->can_define_path === TRUE ) {
 			
-			// If path can be defined in template, try to do that here.
+			// If the upload path doesn't exist and can_define_path true, try to do that here.
 			if ( $this->create_upload_path( $upload_path ) === FALSE ) {
+				
 				// If that can't be done, stop and message.
 				return lang( 'path_not_valid' );
 			}
