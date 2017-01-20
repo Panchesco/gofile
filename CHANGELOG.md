@@ -1,5 +1,13 @@
 #Change Log
 
+##1.2.5
+
+* Adds create_upload_path method. 
+* Adds logic in upload method/tag for creating a new directory if $can_define_path property is true. 
+* Shortens some language variable names
+* Code formatting.
+
+
 ##1.2.4
 
 * Adds allowed_types method for setting CI config['allowed_types'] from EE File Manager setting.

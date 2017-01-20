@@ -4,7 +4,7 @@ return array(
   'author_url'  => 'https://github.com/panchesco',
   'name'        => 'Gofile',
   'description' => 'Added tools for working with files via templates',
-  'version'     => '1.2.4',
+  'version'     => '1.2.5',
   'namespace'   => 'Panchesco\Addons\Gofile',
   'settings_exist' => FALSE,
 );
