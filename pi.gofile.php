@@ -124,6 +124,7 @@ class Gofile
 			return ee()->TMPL->no_results();
 		}
 		
+
 		// Unset file_path info.
 		if(isset($row['file_path']))
 		{
