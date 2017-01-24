@@ -177,7 +177,6 @@ Display file info for a file.
 {credit}<br>
 {location}<br>
 {directory}<br>
-{file_path}<br>
 {file_url}<br>
 {file_ext}<br>
 {file_size_mb}<br>

@@ -124,7 +124,13 @@ class Gofile
 			return ee()->TMPL->no_results();
 		}
 		
+		// Unset file_path info.
+		if(isset($row['file_path']))
+		{
+			//unset($row['file_path']);
+		}
 		
+
 		if ( !empty( $row ) ) {
 			return ee()->TMPL->parse_variables( ee()->TMPL->tagdata, array(
 				 $row 

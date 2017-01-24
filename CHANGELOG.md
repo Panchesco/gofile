@@ -1,5 +1,9 @@
 #Change Log
 
+##1.2.6
+
+* Removes file_path variable from {exp:gofile:file_info} tag pair.
+
 ##1.2.5
 
 * Adds create_upload_path method. 
